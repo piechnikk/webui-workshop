@@ -1,13 +1,17 @@
-const url = new URL(window.location.href);
-const token = url.searchParams.get("token");
+import { WebSocketClient, sessionService } from "/js/src/index.js";
 
-let ws = new WebSocket(`ws://localhost:8080?token=${token}`);
+sessionService.loadAndHideParameters();
 
-ws.onopen = () => {
-  console.log("Connected to server");
-  ws.send(JSON.stringify({ command: "hello", payload: "hello world", token: token }));
-};
+const ws = new WebSocketClient();
 
-ws.onmessage = (message) => {
-  console.log("Received message: ", message.data);
-};
+ws.addListener("authed", () => {
+  console.log("authed");
+  ws.sendMessage({ command: "hello", payload: "hello world" });
+});
+
+ws.addListener("command", (message) => {
+  console.log("Received message");
+  if (message.command === "hello-back") {
+    console.log("received response: ", message.payload);
+  }
+});
