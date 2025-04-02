@@ -1,0 +1,41 @@
+name: Github Action
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies and run tests
+        run: |
+          cd 2-3-4-Exercises
+          npm ci
+          npm run test
+
+  test-ubuntu:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies and run tests
+        run: |
+          cd 2-3-4-Exercises
+          npm ci
+          npm run test

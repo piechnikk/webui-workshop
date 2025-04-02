@@ -2,15 +2,13 @@ const path = require("path");
 const config = require("./config.js");
 
 const { HttpServer, WebSocket, WebSocketMessage } = require("@aliceo2/web-ui");
+const { ApplicationService } = require("./lib/ApplicationService.js");
 
 const http = new HttpServer(config.http, config.jwt, config.oAuth);
 http.addStaticPath(path.join(__dirname, "public"));
 
 http.get("/info", (req, res) => {
-  res.json({
-    name: "Workshop",
-    version: "1.0.0",
-  });
+  res.json(ApplicationService.getInfo());
 });
 
 const ws = new WebSocket(http);
